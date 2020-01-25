@@ -1,5 +1,6 @@
 package com.vinaysshenoy.quarantine
 
+import com.vinaysshenoy.quarantine.TestDescriptor.FlakinessStatus.*
 import org.junit.runner.Description
 
 data class TestDescriptor(
@@ -21,7 +22,7 @@ data class TestDescriptor(
                 val descriptor = TestDescriptor(
                     testClass = description.testClass.canonicalName,
                     testMethod = description.methodName,
-                    flakinessStatus = FlakinessStatus.Unknown
+                    flakinessStatus = Unknown
                 )
                 descriptors.add(descriptor)
             }
@@ -30,12 +31,15 @@ data class TestDescriptor(
         }
     }
 
+    val isFlaky: Boolean
+        get() = flakinessStatus == Flaky
+
     fun asNotFlaky(): TestDescriptor {
-        return copy(flakinessStatus = FlakinessStatus.NotFlaky)
+        return copy(flakinessStatus = NotFlaky)
     }
 
     fun asFlaky(): TestDescriptor {
-        return copy(flakinessStatus = FlakinessStatus.Flaky)
+        return copy(flakinessStatus = Flaky)
     }
 
     enum class FlakinessStatus {

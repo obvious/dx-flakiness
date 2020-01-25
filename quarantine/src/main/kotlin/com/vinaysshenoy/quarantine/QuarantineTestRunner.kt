@@ -12,9 +12,14 @@ import org.slf4j.LoggerFactory
 
 class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
 
-    private val logger = LoggerFactory.getLogger(QuarantineTestRunner::class.java.simpleName)
+    // It is crucial that this is static because a new instance of the test runner
+    // will be created for each test class, and the repository needs to be shared
+    // between them.
+    companion object {
+        private val repository: TestRepository by lazy { InMemoryTestRepository() }
+    }
 
-    private val repository: TestRepository = InMemoryTestRepository()
+    private val logger = LoggerFactory.getLogger(QuarantineTestRunner::class.java.simpleName)
 
     private val flakyTestRetryCount = 10
 
@@ -28,8 +33,7 @@ class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
 
             override fun testSuiteFinished(description: Description?) {
                 super.testSuiteFinished(description)
-                logger.info("Completed test run!")
-                logger.info("${repository.results()}")
+                logger.info("${repository.results().filter(TestDescriptor::isFlaky).map { it.testMethod }}")
             }
         })
         super.run(notifier)
@@ -76,7 +80,6 @@ class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
             // This test having failed once need not mean that is flaky. We will try running the test some more times
             // and see if they pass in any of those. In which case, we will mark them as flaky.
             val testRunCount = generateSequence(1) { testRetryNumber ->
-                logger.info("retry #$testRetryNumber for $testClazzName, $testMethodName")
                 when {
                     testRetryNumber > flakyTestRetryCount -> null
                     else -> {
