@@ -1,2 +1,3 @@
 rootProject.name = 'test-runner-mvp'
+include 'quarantine'
 
