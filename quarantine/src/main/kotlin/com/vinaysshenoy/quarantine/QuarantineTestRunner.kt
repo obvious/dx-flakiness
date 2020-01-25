@@ -1,10 +1,13 @@
 package com.vinaysshenoy.quarantine
 
+import org.junit.internal.AssumptionViolatedException
+import org.junit.internal.runners.model.EachTestNotifier
 import org.junit.runner.Description
 import org.junit.runner.notification.RunListener
 import org.junit.runner.notification.RunNotifier
 import org.junit.runners.BlockJUnit4ClassRunner
 import org.junit.runners.model.FrameworkMethod
+import org.junit.runners.model.Statement
 import org.slf4j.LoggerFactory
 
 class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
@@ -13,7 +16,7 @@ class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
 
     private val repository: TestRepository = InMemoryTestRepository()
 
-    private val flakyTestRetryCount = 3
+    private val flakyTestRetryCount = 10
 
     override fun run(notifier: RunNotifier) {
         notifier.addListener(object : RunListener() {
@@ -33,23 +36,51 @@ class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
     }
 
     override fun runChild(method: FrameworkMethod, notifier: RunNotifier) {
-        val testClazzName = method.declaringClass.canonicalName
-        val testMethodName = method.name
+        runChildWithFlakinessChecks(method, notifier)
+    }
 
+    private fun runChildWithFlakinessChecks(method: FrameworkMethod, notifier: RunNotifier) {
+        val description = describeChild(method)
+        if (isIgnored(method)) {
+            notifier.fireTestIgnored(description)
+        } else {
+            val statement: Statement = object : Statement() {
+                @Throws(Throwable::class)
+                override fun evaluate() {
+                    methodBlock(method).evaluate()
+                }
+            }
+
+            val testClazzName = method.declaringClass.canonicalName
+            val testMethodName = method.name
+            runLeafWithFlakinessChecks(testClazzName, testMethodName, statement, description, notifier)
+        }
+    }
+
+    private fun runLeafWithFlakinessChecks(
+        testClazzName: String,
+        testMethodName: String,
+        statement: Statement,
+        description: Description,
+        notifier: RunNotifier
+    ) {
+        val eachNotifier = EachTestNotifier(notifier, description)
+        eachNotifier.fireTestStarted()
         try {
-            super.runChild(method, notifier)
+            statement.evaluate()
             // If it passes, mark it as not-flaky
             repository.record(testClazzName, testMethodName, false)
+        } catch (e: AssumptionViolatedException) {
+            eachNotifier.addFailedAssumption(e)
         } catch (e: Throwable) {
-            // This test having failed once need not mean that is flaky. We will try running the test some more times,
-            // (currently 2 more times), and see if they pass in any of those. In which case, we will mark them as
-            // flaky.
+            // This test having failed once need not mean that is flaky. We will try running the test some more times
+            // and see if they pass in any of those. In which case, we will mark them as flaky.
             val testRunCount = generateSequence(1) { testRetryNumber ->
                 logger.info("retry #$testRetryNumber for $testClazzName, $testMethodName")
                 when {
                     testRetryNumber > flakyTestRetryCount -> null
                     else -> {
-                        val hasPassedOnRetry = retryAndReturnException(method, notifier) == null
+                        val hasPassedOnRetry = retryAndReturnException(statement) == null
 
                         if (hasPassedOnRetry) null else testRetryNumber + 1
                     }
@@ -59,17 +90,22 @@ class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
             if (testRunCount == flakyTestRetryCount) {
                 // We have tested it for all retry counts and it has failed each time, so it is not a flaky test
                 repository.record(testClazzName, testMethodName, false)
+
+                // Only report failed, non-flaky tests as failures
+                eachNotifier.addFailure(e)
             } else {
                 repository.record(testClazzName, testMethodName, true)
             }
+        } finally {
+            eachNotifier.fireTestFinished()
         }
     }
 
-    private fun retryAndReturnException(method: FrameworkMethod, notifier: RunNotifier): Throwable? {
+    private fun retryAndReturnException(statement: Statement): Throwable? {
         var failure: Throwable? = null
 
         try {
-            super.runChild(method, notifier)
+            statement.evaluate()
         } catch (e: Throwable) {
             failure = e
         }
