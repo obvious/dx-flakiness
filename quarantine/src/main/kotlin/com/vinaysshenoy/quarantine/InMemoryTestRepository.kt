@@ -19,6 +19,8 @@ class InMemoryTestRepository : TestRepository {
         }
     }
 
+    override fun results(): List<TestDescriptor> = results
+
     private fun findTest(clazz: String, method: String): TestDescriptor? {
         return tests.find { it.testClass == clazz && it.testMethod == method }
     }
