@@ -15,6 +15,8 @@ class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
         notifier.addListener(object : RunListener() {
             override fun testSuiteStarted(description: Description) {
                 logger.info("Start test run: $description with ${description.testCount()} tests")
+                val descriptors = TestDescriptor.fromDescription(description)
+                logger.info("$descriptors")
                 super.testSuiteStarted(description)
             }
 
