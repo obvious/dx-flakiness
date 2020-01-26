@@ -1,1 +1,4 @@
 appName: Quarantine Server
+database:
+  driverClass: org.sqlite.JDBC
+  url: jdbc:sqlite:quarantine.db
