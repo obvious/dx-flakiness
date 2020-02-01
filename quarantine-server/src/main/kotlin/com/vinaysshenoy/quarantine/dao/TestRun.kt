@@ -5,7 +5,7 @@ import java.time.Instant
 
 data class TestRun(
     @ColumnName("id")
-    val id: Int,
+    val id: Int = -1,
 
     @ColumnName("timestamp")
     val timestamp: Instant
