@@ -3,13 +3,10 @@ package com.vinaysshenoy.quarantine
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.vinaysshenoy.quarantine.resources.QuarantineResource
 import io.dropwizard.Application
-import io.dropwizard.jdbi3.JdbiFactory
 import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle
 import io.dropwizard.migrations.MigrationsBundle
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
-import org.jdbi.v3.core.kotlin.KotlinPlugin
-import org.jdbi.v3.sqlobject.kotlin.KotlinSqlObjectPlugin
 import org.jdbi.v3.sqlobject.kotlin.onDemand
 import org.slf4j.LoggerFactory
 import java.time.Clock
@@ -38,12 +35,7 @@ class App : Application<AppConfiguration>() {
 
         environment.objectMapper.registerModule(KotlinModule())
 
-        val jdbi = with(JdbiFactory()) {
-            build(environment, configuration.database, "app-db").apply {
-                installPlugin(KotlinPlugin())
-                installPlugin(KotlinSqlObjectPlugin())
-            }
-        }
+        val jdbi = AppJdbiFactory().build(environment, configuration.database, "app-db")
 
         environment.jersey().register(QuarantineResource(clock, jdbi.onDemand()))
     }
