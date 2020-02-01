@@ -3,6 +3,7 @@ package com.vinaysshenoy.quarantine.dbqueries
 import ch.qos.logback.classic.Level
 import com.vinaysshenoy.quarantine.dao.FlakyStatus
 import com.vinaysshenoy.quarantine.dao.QuarantineDao
+import com.vinaysshenoy.quarantine.mappers.jdbi.JdbiInstant
 import com.vinaysshenoy.quarantine.testCase
 import com.vinaysshenoy.quarantine.testRun
 import com.vinaysshenoy.quarantine.testRunResult
@@ -32,6 +33,7 @@ class QuarantineDaoTest {
             installPlugin(SqlObjectPlugin())
             installPlugin(KotlinPlugin())
             installPlugin(KotlinSqlObjectPlugin())
+            JdbiInstant.install(this)
         }
 
     private val quarantineDao: QuarantineDao by lazy(LazyThreadSafetyMode.NONE) {
