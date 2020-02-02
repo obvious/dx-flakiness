@@ -263,3 +263,4 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 quarantine.db
+quarantine.db-journal

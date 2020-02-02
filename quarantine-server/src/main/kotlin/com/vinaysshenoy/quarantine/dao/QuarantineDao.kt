@@ -65,4 +65,25 @@ interface QuarantineDao {
 
         saveTestRunResults(runId, results)
     }
+
+    @SqlQuery(
+        """
+            SELECT DISTINCT
+                TC.class, 
+                TC.name,
+                ROUND(
+                    IFNULL(
+                        (
+                            CAST((SELECT count(run_id) FROM Test_Run_Results WHERE case_id = TC.id AND flaky_status = 'Flaky') AS REAL) /
+                            CAST((SELECT count(run_id) FROM Test_Run_Results WHERE case_id = TC.id) AS REAL)
+                        ), 
+                        0.0
+                    ), 
+                    2
+                ) flakiness
+            FROM Test_Cases TC INNER JOIN Test_Run_Results TRR ON TRR.case_id = TC.id
+            ORDER BY class, name
+        """
+    )
+    fun stats(): List<TestStat>
 }
