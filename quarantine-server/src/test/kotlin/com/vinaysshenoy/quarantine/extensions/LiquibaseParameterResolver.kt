@@ -1,8 +1,10 @@
 package com.vinaysshenoy.quarantine.extensions
 
 import ch.qos.logback.classic.Level
+import com.vinaysshenoy.quarantine.LiquibaseLoggerFactory
 import liquibase.Liquibase
 import liquibase.database.jvm.JdbcConnection
+import liquibase.logging.LogService
 import liquibase.resource.ClassLoaderResourceAccessor
 import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
@@ -16,6 +18,10 @@ class LiquibaseParameterResolver : AfterEachCallback, TypeBasedParameterResolver
     companion object {
         private val EXTENSION_NAMESPACE = ExtensionContext.Namespace.create(Any())
         private val KEY = Any()
+    }
+
+    init {
+        LogService.setLoggerFactory(LiquibaseLoggerFactory())
     }
 
     override fun resolveParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Liquibase {

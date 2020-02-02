@@ -1,9 +1,11 @@
 package com.vinaysshenoy.quarantine.extensions
 
 import ch.qos.logback.classic.Level
+import com.vinaysshenoy.quarantine.LiquibaseLoggerFactory
 import com.vinaysshenoy.quarantine.mappers.jdbi.JdbiInstant
 import liquibase.Liquibase
 import liquibase.database.jvm.JdbcConnection
+import liquibase.logging.LogService
 import liquibase.resource.ClassLoaderResourceAccessor
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
@@ -22,6 +24,10 @@ class JdbiObjectParameterResolver : ParameterResolver, AfterEachCallback {
     companion object {
         private val EXTENSION_NAMESPACE = ExtensionContext.Namespace.create(Any())
         private val KEY = Any()
+    }
+
+    init {
+        LogService.setLoggerFactory(LiquibaseLoggerFactory())
     }
 
     override fun supportsParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Boolean {
