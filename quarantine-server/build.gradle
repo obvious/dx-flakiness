@@ -8,6 +8,7 @@ version '0.0.1'
 
 test {
     useJUnitPlatform()
+    systemProperty "junit.jupiter.extensions.autodetection.enabled", true
 }
 
 sourceCompatibility = 1.8
