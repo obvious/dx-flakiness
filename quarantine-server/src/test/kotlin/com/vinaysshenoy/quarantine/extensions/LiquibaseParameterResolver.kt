@@ -20,10 +20,6 @@ class LiquibaseParameterResolver : AfterEachCallback, TypeBasedParameterResolver
         private val KEY = Any()
     }
 
-    init {
-        LogService.setLoggerFactory(LiquibaseLoggerFactory())
-    }
-
     override fun resolveParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Liquibase {
         cleanUp(extensionContext)
 
