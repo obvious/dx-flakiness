@@ -34,11 +34,6 @@ class QuarantineDaoTest {
                 testName = "best test 1"
             )
         )
-
-        val runId = quarantineDao.saveTestRun(testRun)
-        expectThat(runId).isEqualTo(1)
-        quarantineDao.saveTestCases(testCases)
-
         val runResults = listOf(
             testRunResult(
                 runId = -1,
@@ -64,27 +59,27 @@ class QuarantineDaoTest {
         )
 
         // when
-        quarantineDao.saveTestRunResults(runId, runResults)
+        quarantineDao.recordTestRun(testRun, testCases, runResults)
 
         // then
-        expectThat(quarantineDao.testResultsForRunId(runId))
+        expectThat(quarantineDao.testResultsForRunId(1))
             .containsExactlyInAnyOrder(
                 testRunResult(
-                    runId = runId,
+                    runId = 1,
                     caseId = 1,
                     testCaseClassName = "TestClass1",
                     testCaseTestName = "best test 1",
                     flakyStatus = FlakyStatus.Flaky
                 ),
                 testRunResult(
-                    runId = runId,
+                    runId = 1,
                     caseId = 2,
                     testCaseClassName = "TestClass1",
                     testCaseTestName = "best test 2",
                     flakyStatus = FlakyStatus.NotFlaky
                 ),
                 testRunResult(
-                    runId = runId,
+                    runId = 1,
                     caseId = 3,
                     testCaseClassName = "TestClass2",
                     testCaseTestName = "best test 1",

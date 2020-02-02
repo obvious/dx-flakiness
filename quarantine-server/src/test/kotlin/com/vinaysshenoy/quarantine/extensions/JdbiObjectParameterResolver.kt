@@ -1,6 +1,5 @@
 package com.vinaysshenoy.quarantine.extensions
 
-import ch.qos.logback.classic.Level
 import com.vinaysshenoy.quarantine.mappers.jdbi.JdbiInstant
 import liquibase.Liquibase
 import liquibase.database.jvm.JdbcConnection
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
-import org.slf4j.LoggerFactory
 import java.sql.Connection
 import java.sql.DriverManager
 
@@ -66,9 +64,6 @@ class JdbiObjectParameterResolver : ParameterResolver, AfterEachCallback {
             ClassLoaderResourceAccessor(),
             JdbcConnection(connection)
         )
-
-        val logger = LoggerFactory.getLogger("liquibase")
-        (logger as ch.qos.logback.classic.Logger).level = Level.OFF
 
         liquibase.update("")
 

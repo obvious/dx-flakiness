@@ -1,6 +1,5 @@
 package com.vinaysshenoy.quarantine.dao
 
-import org.jdbi.v3.core.transaction.TransactionIsolationLevel.READ_UNCOMMITTED
 import org.jdbi.v3.sqlobject.kotlin.BindKotlin
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys
 import org.jdbi.v3.sqlobject.statement.SqlBatch
@@ -54,7 +53,7 @@ interface QuarantineDao {
     fun testResultsForRunId(runId: Int): List<TestRunResult>
 
     @JvmDefault
-    @Transaction(READ_UNCOMMITTED)
+    @Transaction
     fun recordTestRun(
         testRun: TestRun,
         testCases: List<TestCase>,
