@@ -7,6 +7,7 @@ import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle
 import io.dropwizard.migrations.MigrationsBundle
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
+import io.dropwizard.views.ViewBundle
 import org.jdbi.v3.sqlobject.kotlin.onDemand
 import org.slf4j.LoggerFactory
 import java.time.Clock
@@ -25,6 +26,7 @@ class App : Application<AppConfiguration>() {
             })
 
             addBundle(JdbiExceptionsBundle())
+            addBundle(ViewBundle())
         }
     }
 
