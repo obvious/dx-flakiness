@@ -13,12 +13,13 @@ import javax.ws.rs.Consumes
 import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.MediaType.APPLICATION_JSON
+import javax.ws.rs.core.MediaType.TEXT_HTML
 import javax.ws.rs.core.Response
 
 @Path("/quarantine")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+@Produces(value = [APPLICATION_JSON, TEXT_HTML])
+@Consumes(APPLICATION_JSON)
 class QuarantineResource(
     private val clock: Clock,
     private val quarantineDao: QuarantineDao
@@ -30,7 +31,13 @@ class QuarantineResource(
         val testCases = testCasePayloads
             .map { TestCase(className = it.testClass, testName = it.testName) }
         val results = testCasePayloads
-            .map { TestRunResult(testCaseClassName = it.testClass, testCaseTestName = it.testName, flakyStatus = it.flakyStatus) }
+            .map {
+                TestRunResult(
+                    testCaseClassName = it.testClass,
+                    testCaseTestName = it.testName,
+                    flakyStatus = it.flakyStatus
+                )
+            }
 
         quarantineDao.recordTestRun(testRun, testCases, results)
 
