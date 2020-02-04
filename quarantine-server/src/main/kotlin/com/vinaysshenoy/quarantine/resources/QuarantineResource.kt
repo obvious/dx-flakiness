@@ -5,14 +5,12 @@ import com.vinaysshenoy.quarantine.dao.TestCase
 import com.vinaysshenoy.quarantine.dao.TestRun
 import com.vinaysshenoy.quarantine.dao.TestRunResult
 import com.vinaysshenoy.quarantine.resources.payloads.TestCasePayload
+import com.vinaysshenoy.quarantine.resources.views.TestStatsView
 import java.time.Clock
 import java.time.Instant
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
-import javax.ws.rs.Consumes
-import javax.ws.rs.POST
-import javax.ws.rs.Path
-import javax.ws.rs.Produces
+import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.MediaType.TEXT_HTML
 import javax.ws.rs.core.Response
@@ -42,5 +40,10 @@ class QuarantineResource(
         quarantineDao.recordTestRun(testRun, testCases, results)
 
         return Response.ok().build()
+    }
+
+    @GET
+    fun stats(): TestStatsView {
+        return TestStatsView(quarantineDao.stats().sortedByDescending { it.flakinessRate })
     }
 }
