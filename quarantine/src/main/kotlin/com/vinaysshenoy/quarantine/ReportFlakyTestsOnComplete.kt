@@ -21,8 +21,7 @@ class ReportFlakyTestsOnComplete(
         }
     }
 
-    private val logger =
-        LoggerFactory.getLogger(ReportFlakyTestsOnComplete::class.java.simpleName)
+    private val logger = LoggerFactory.getLogger(ReportFlakyTestsOnComplete::class.java.simpleName)
 
     override fun run() {
         logger.info("${repository.results().filter(TestDescriptor::isFlaky).map { it.testMethod }}")
