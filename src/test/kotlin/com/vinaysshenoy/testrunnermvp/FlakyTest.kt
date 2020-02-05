@@ -1,10 +1,8 @@
 package com.vinaysshenoy.testrunnermvp
 
 import com.vinaysshenoy.quarantine.QuarantineTestRule
-import com.vinaysshenoy.quarantine.QuarantineTestRunner
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import strikt.api.expectThat
 import strikt.assertions.isGreaterThan
 import java.util.*

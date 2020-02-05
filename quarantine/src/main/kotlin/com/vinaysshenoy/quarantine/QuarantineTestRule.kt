@@ -15,8 +15,10 @@ class QuarantineTestRule : TestRule {
 
     private val logger = logger<QuarantineTestRule>()
 
+    private val config: Config = Config.read(javaClass.classLoader)
+
     init {
-        ReportFlakyTestsOnComplete.setup(repository)
+        ReportFlakyTestsOnComplete.setup(repository, config)
     }
 
     private val flakyTestRetryCount = 10

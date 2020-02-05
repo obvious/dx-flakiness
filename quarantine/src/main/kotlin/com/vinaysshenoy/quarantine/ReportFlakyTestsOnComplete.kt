@@ -1,19 +1,22 @@
 package com.vinaysshenoy.quarantine
 
-import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ReportFlakyTestsOnComplete(
-    private val repository: TestRepository
+    private val repository: TestRepository,
+    private val config: Config
 ) : Thread("report-flaky-tests-thread") {
 
     companion object {
         private val hasBeenSetup = AtomicBoolean(false)
 
-        fun setup(repository: TestRepository) {
+        fun setup(
+            repository: TestRepository,
+            config: Config
+        ) {
             if (!hasBeenSetup.get()) {
                 val reportFlakyTests =
-                    ReportFlakyTestsOnComplete(repository)
+                    ReportFlakyTestsOnComplete(repository, config)
                 Runtime.getRuntime().addShutdownHook(reportFlakyTests)
 
                 hasBeenSetup.set(true)
@@ -21,7 +24,11 @@ class ReportFlakyTestsOnComplete(
         }
     }
 
-    private val logger = LoggerFactory.getLogger(ReportFlakyTestsOnComplete::class.java.simpleName)
+    private val logger = logger<ReportFlakyTestsOnComplete>()
+
+    init {
+        logger.info("CONFIG: $config")
+    }
 
     override fun run() {
         logger.info("FLAKY: ${repository.results().filter(TestDescriptor::isFlaky).map { it.testMethod }}")
