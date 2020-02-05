@@ -20,7 +20,7 @@ data class TestDescriptor(
 
             if (description.isTest) {
                 val descriptor = TestDescriptor(
-                    testClass = description.testClass.canonicalName,
+                    testClass = description.className,
                     testMethod = description.methodName,
                     flakinessStatus = Unknown
                 )

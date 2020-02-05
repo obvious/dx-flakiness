@@ -13,6 +13,8 @@ class QuarantineTestRule : TestRule {
         private val repository: TestRepository by lazy { InMemoryTestRepository() }
     }
 
+    private val logger = logger<QuarantineTestRule>()
+
     init {
         ReportFlakyTestsOnComplete.setup(repository)
     }
@@ -23,7 +25,8 @@ class QuarantineTestRule : TestRule {
         return object : Statement() {
 
             override fun evaluate() {
-                repository.add(TestDescriptor.fromDescription(description))
+                val descriptors = TestDescriptor.fromDescription(description)
+                repository.add(descriptors)
 
                 if (description.isTest) {
                     val testClazzName = description.className

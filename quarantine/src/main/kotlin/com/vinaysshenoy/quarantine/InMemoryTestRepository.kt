@@ -2,6 +2,8 @@ package com.vinaysshenoy.quarantine
 
 class InMemoryTestRepository : TestRepository {
 
+    private val logger = logger<InMemoryTestRepository>()
+
     private var tests: List<TestDescriptor> = emptyList()
 
     private var results: List<TestDescriptor> = emptyList()
