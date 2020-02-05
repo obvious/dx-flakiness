@@ -44,6 +44,7 @@ class QuarantineResource(
 
     @GET
     fun stats(): TestStatsView {
-        return TestStatsView(quarantineDao.stats().sortedByDescending { it.flakinessRate })
+        val stats = quarantineDao.stats().sortedByDescending { it.flakinessRate }
+        return TestStatsView.fromStats(stats)
     }
 }
