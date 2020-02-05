@@ -1,14 +1,18 @@
 package com.vinaysshenoy.testrunnermvp
 
+import com.vinaysshenoy.quarantine.QuarantineTestRule
 import com.vinaysshenoy.quarantine.QuarantineTestRunner
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import strikt.api.expectThat
 import strikt.assertions.isGreaterThan
 import java.util.*
 
-@RunWith(QuarantineTestRunner::class)
 class FlakyTest {
+
+    @get:Rule
+    val rule = QuarantineTestRule()
 
     private val random = Random()
 
@@ -22,8 +26,10 @@ class FlakyTest {
         expectThat(random.nextFloat()) isGreaterThan 0.3F
     }
 
-    @RunWith(QuarantineTestRunner::class)
     class NestedFlakyTest {
+
+        @get:Rule
+        val rule = QuarantineTestRule()
 
         private val random = Random()
 
