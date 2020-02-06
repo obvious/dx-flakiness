@@ -39,7 +39,7 @@ class QuarantineResource(
 
         quarantineDao.recordTestRun(testRun, testCases, results)
 
-        return Response.ok().build()
+        return Response.ok("OK").build()
     }
 
     @GET

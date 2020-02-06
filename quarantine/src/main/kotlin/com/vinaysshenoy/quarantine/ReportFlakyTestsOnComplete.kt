@@ -22,7 +22,6 @@ class ReportFlakyTestsOnComplete(
     private val logger = logger<ReportFlakyTestsOnComplete>()
 
     override fun run() {
-        logger.info("FLAKY: ${repository.results().filter(TestDescriptor::isFlaky).map { it.testMethod }}")
-        logger.info("NOT FLAKY: ${repository.results().filter { !it.isFlaky }.map { it.testMethod }}")
+        repository.pushResultsToCloud()
     }
 }
