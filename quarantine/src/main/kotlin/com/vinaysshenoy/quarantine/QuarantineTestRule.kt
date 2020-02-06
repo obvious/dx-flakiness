@@ -6,19 +6,12 @@ import org.junit.runners.model.Statement
 
 class QuarantineTestRule : TestRule {
 
-    // It is crucial that this is static because a new instance of the test runner
-    // will be created for each test class, and the repository needs to be shared
-    // between them.
-    companion object {
-        private val repository: TestRepository by lazy { InMemoryTestRepository() }
-    }
+    private val repository: TestRepository by lazy { InMemoryTestRepository.instance() }
 
     private val logger = logger<QuarantineTestRule>()
 
-    private val config: Config = Config.read(javaClass.classLoader)
-
     init {
-        ReportFlakyTestsOnComplete.setup(repository, config)
+        ReportFlakyTestsOnComplete.setup(repository)
     }
 
     private val flakyTestRetryCount = 10
