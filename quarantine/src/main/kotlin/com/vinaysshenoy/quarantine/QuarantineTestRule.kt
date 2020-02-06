@@ -13,12 +13,16 @@ class QuarantineTestRule : TestRule {
     }
 
     override fun apply(statement: Statement, description: Description): Statement {
-        return QuarantinedStatement(
-            repository = repository,
-            flakyTestRetryCount = 10,
-            base = statement,
-            description = description
-        )
+        val shouldQuarantineTests = repository.config().enabled
+        return if (shouldQuarantineTests) {
+            QuarantinedStatement(
+                repository = repository,
+                flakyTestRetryCount = 10,
+                base = statement,
+                description = description
+            )
+        } else {
+            statement
+        }
     }
-
 }
