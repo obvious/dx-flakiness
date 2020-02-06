@@ -1,11 +1,17 @@
 package com.vinaysshenoy.quarantine
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.vinaysshenoy.quarantine.TestDescriptor.FlakinessStatus.*
 import org.junit.runner.Description
 
 data class TestDescriptor(
+    @JsonProperty(value = "class")
     val testClass: String,
+
+    @JsonProperty(value = "name")
     val testMethod: String,
+
+    @JsonProperty(value = "flakyStatus")
     val flakinessStatus: FlakinessStatus
 ) {
     companion object {
