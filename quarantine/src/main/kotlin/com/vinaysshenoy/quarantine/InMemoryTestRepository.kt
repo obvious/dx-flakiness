@@ -1,6 +1,27 @@
 package com.vinaysshenoy.quarantine
 
-class InMemoryTestRepository(private val config: Config) : TestRepository {
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import retrofit2.Retrofit
+import retrofit2.converter.jackson.JacksonConverterFactory
+import retrofit2.create
+
+class InMemoryTestRepository(
+    private val config: Config
+) : TestRepository {
+
+    private val retrofit: Retrofit by lazy {
+        val objectMapper = ObjectMapper().registerModule(KotlinModule())
+
+        Retrofit
+            .Builder()
+            .baseUrl(config.endpoint)
+            .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+            .validateEagerly(true)
+            .build()
+    }
+
+    private val api: QuarantineApi by lazy { retrofit.create<QuarantineApi>() }
 
     companion object {
         private lateinit var INSTANCE: InMemoryTestRepository
@@ -45,6 +66,19 @@ class InMemoryTestRepository(private val config: Config) : TestRepository {
     override fun results(): List<TestDescriptor> = results
 
     override fun pushResultsToCloud() {
+        try {
+            val response = api.sendTestRun(results).execute()
+
+            if (response.isSuccessful) {
+                logger.info("Pushed test results to Quarantine successfully!")
+            } else {
+                logger.info("Response Status Code: ${response.code()}")
+                logger.info("${response.body()}")
+                logger.error("Could not sent results to Quarantine! Checks logs for more information!")
+            }
+        } catch (e: Throwable) {
+            logger.error("Error sending Quarantine results", e)
+        }
     }
 
     override fun config(): Config {
