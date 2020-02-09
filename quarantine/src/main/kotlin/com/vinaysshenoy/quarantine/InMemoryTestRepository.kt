@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.create
 
 class InMemoryTestRepository(
@@ -16,6 +17,7 @@ class InMemoryTestRepository(
         Retrofit
             .Builder()
             .baseUrl(config.endpoint)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(JacksonConverterFactory.create(objectMapper))
             .validateEagerly(true)
             .build()

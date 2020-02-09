@@ -1,4 +1,4 @@
-rootProject.name = 'test-runner-mvp'
+rootProject.name = 'quarantine-tests'
 include 'quarantine'
 include 'quarantine-server'
 
