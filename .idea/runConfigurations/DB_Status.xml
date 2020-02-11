@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DB Status" type="JetRunConfigurationType" factoryName="Kotlin">
-    <module name="test-runner-mvp.quarantine-server.main" />
+    <module name="quarantine-tests.quarantine-server.main" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="db status quarantine-server/config.yml" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />

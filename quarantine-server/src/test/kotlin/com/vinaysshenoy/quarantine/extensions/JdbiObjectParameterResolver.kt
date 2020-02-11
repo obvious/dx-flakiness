@@ -1,6 +1,7 @@
 package com.vinaysshenoy.quarantine.extensions
 
 import com.vinaysshenoy.quarantine.mappers.jdbi.JdbiInstant
+import com.vinaysshenoy.quarantine.path
 import liquibase.Liquibase
 import liquibase.database.jvm.JdbcConnection
 import liquibase.resource.ClassLoaderResourceAccessor
@@ -60,7 +61,7 @@ class JdbiObjectParameterResolver : ParameterResolver, AfterEachCallback {
         context: ExtensionContext
     ) {
         val liquibase = Liquibase(
-            "migrations.sql",
+            path("liquibase", "changelog.xml"),
             ClassLoaderResourceAccessor(),
             JdbcConnection(connection)
         )

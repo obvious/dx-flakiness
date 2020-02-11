@@ -22,7 +22,7 @@ class App : Application<AppConfiguration>() {
 
                 override fun getDataSourceFactory(configuration: AppConfiguration) = configuration.database
 
-                override fun getMigrationsFileName() = "migrations.sql"
+                override fun getMigrationsFileName() = path("liquibase", "changelog.xml")
             })
 
             addBundle(JdbiExceptionsBundle())

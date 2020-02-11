@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="DB Migrate (Dry Run)" type="JetRunConfigurationType" factoryName="Kotlin">
+  <configuration default="false" name="DB Migration Test" type="JetRunConfigurationType" factoryName="Kotlin">
     <module name="quarantine-tests.quarantine-server.main" />
     <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="db migrate --dry-run quarantine-server/config.yml" />
+    <option name="PROGRAM_PARAMETERS" value="db test quarantine-server/config.yml" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <option name="PASS_PARENT_ENVS" value="true" />

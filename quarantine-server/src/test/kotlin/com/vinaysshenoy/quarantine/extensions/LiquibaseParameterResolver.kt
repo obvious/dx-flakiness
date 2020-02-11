@@ -2,6 +2,7 @@ package com.vinaysshenoy.quarantine.extensions
 
 import ch.qos.logback.classic.Level
 import com.vinaysshenoy.quarantine.LiquibaseLoggerFactory
+import com.vinaysshenoy.quarantine.path
 import liquibase.Liquibase
 import liquibase.database.jvm.JdbcConnection
 import liquibase.logging.LogService
@@ -24,7 +25,7 @@ class LiquibaseParameterResolver : AfterEachCallback, TypeBasedParameterResolver
         cleanUp(extensionContext)
 
         val liquibase = Liquibase(
-            "migrations.sql",
+            path("liquibase", "changelog.xml"),
             ClassLoaderResourceAccessor(),
             JdbcConnection(DriverManager.getConnection("jdbc:sqlite::memory:"))
         )

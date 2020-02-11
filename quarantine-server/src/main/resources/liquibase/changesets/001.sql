@@ -1,14 +1,14 @@
 --liquibase formatted sql
 
---changeset vinaysshenoy:001 dbms:sqlite
+--changeset vinaysshenoy:create-initial-tables dbms:sqlite
 CREATE TABLE "Test_Cases" (
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "id" INTEGER PRIMARY KEY,
     "class" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     CONSTRAINT "Test_Cases_class_name_unique" UNIQUE ("class", "name")
 );
 CREATE TABLE "Test_Runs" (
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "id" INTEGER PRIMARY KEY,
     "timestamp" TEXT NOT NULL
 );
 CREATE TABLE "Test_Run_Results" (
