@@ -1,18 +1,18 @@
 package com.vinaysshenoy.quarantine.dbqueries
 
-import com.vinaysshenoy.quarantine.dao.FlakyStatus
-import com.vinaysshenoy.quarantine.dao.FlakyStatus.*
+import com.vinaysshenoy.quarantine.dao.FlakyStatus.Flaky
+import com.vinaysshenoy.quarantine.dao.FlakyStatus.NotFlaky
 import com.vinaysshenoy.quarantine.dao.QuarantineDao
 import com.vinaysshenoy.quarantine.dao.TestStat
 import com.vinaysshenoy.quarantine.extensions.JdbiObjectParameterResolver
+import com.vinaysshenoy.quarantine.project
 import com.vinaysshenoy.quarantine.testCase
 import com.vinaysshenoy.quarantine.testRun
 import com.vinaysshenoy.quarantine.testRunResult
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import strikt.api.expectThat
-import strikt.assertions.containsExactly
-import strikt.assertions.containsExactlyInAnyOrder
+import strikt.assertions.*
 
 @ExtendWith(JdbiObjectParameterResolver::class)
 class QuarantineDaoTest {
@@ -220,5 +220,51 @@ class QuarantineDaoTest {
                 flakinessRate = 1F
             )
         )
+    }
+
+    @Test
+    fun `saving projects should work as expected`(quarantineDao: QuarantineDao) {
+        // given
+        val myProject = project(
+            id = -1,
+            slug = "my-terrible-project",
+            name = "My Awesome Project"
+        )
+        val theirProject = project(
+            id = -2,
+            slug = "their-awesome-project",
+            name = "Their Terrible Project"
+        )
+
+        // when
+        expectThat(quarantineDao.projects()).isEmpty()
+        val generatedIdOfMyProject = quarantineDao.createProject(myProject)
+        val generatedIdOfTheirProject = quarantineDao.createProject(theirProject)
+
+        // then
+        val projects = quarantineDao.projects()
+        expectThat(projects)
+            .containsExactlyInAnyOrder(
+                myProject.withId(generatedIdOfMyProject),
+                theirProject.withId(generatedIdOfTheirProject)
+            )
+    }
+
+    @Test
+    fun `fetching an existing project by slug should return the project`(quarantineDao: QuarantineDao) {
+        // given
+        val existingProjectSlug = "live-project"
+        val projectThatWeAreLookingFor = project(id = 1, slug = existingProjectSlug, name = "Woo Hoo")
+        val projectThatWeAreNotLookingFor = project(id = 2, slug = "dead-project", name = "Boo Hoo")
+        val nonExistentProjectSlug = "castle-in-the-air"
+        quarantineDao.createProject(projectThatWeAreLookingFor)
+        quarantineDao.createProject(projectThatWeAreNotLookingFor)
+
+        // when
+        val foundProject = quarantineDao.findProjectBySlug(existingProjectSlug)
+
+        // then
+        expectThat(foundProject) isEqualTo projectThatWeAreLookingFor
+        expectThat(quarantineDao.findProjectBySlug(nonExistentProjectSlug)).isNull()
     }
 }

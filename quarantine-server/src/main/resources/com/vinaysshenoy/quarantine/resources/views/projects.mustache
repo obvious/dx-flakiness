@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Projects</title>
+    <style type="text/css">
+        table, th, td {
+            border: 1px solid slategray;
+        }
+
+        table {
+            margin: 16px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px;
+        }
+
+        form {
+            margin: 16px;
+        }
+    </style>
+</head>
+<body>
+<form method="POST">
+    <div>
+        <label for="slug-input">Enter a project slug here. Must be URL-compliant and UNIQUE!</label>
+        <input required minlength="7" name="slug" id="slug-input" placeholder="woo-hoo">
+    </div>
+    <div>
+        <label for="name-input">Enter whatever here</label>
+        <input required name="name" id="name-input" placeholder="Meh">
+    </div>
+    <div>
+        <button type="submit">Create project</button>
+    </div>
+</form>
+<table>
+    <tr>
+        <th>Slug</th>
+        <th>Project</th>
+    </tr>
+    {{#projects}}
+        <tr>
+            <td>{{slug}}</td>
+            <td>{{name}}</td>
+        </tr>
+    {{/projects}}
+</table>
+</body>

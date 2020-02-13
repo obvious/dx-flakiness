@@ -2,6 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="quarantine-server_main" target="1.8" />
+      <module name="quarantine-server_test" target="1.8" />
+      <module name="quarantine-tests_main" target="1.8" />
+      <module name="quarantine-tests_test" target="1.8" />
+      <module name="quarantine_main" target="1.8" />
+      <module name="quarantine_test" target="1.8" />
       <module name="test-runner-mvp.main" target="1.8" />
       <module name="test-runner-mvp.quarantine-server.main" target="1.8" />
       <module name="test-runner-mvp.quarantine-server.test" target="1.8" />

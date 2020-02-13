@@ -86,4 +86,22 @@ interface QuarantineDao {
         """
     )
     fun stats(): List<TestStat>
+
+    @SqlUpdate("""
+        INSERT INTO Projects (
+            slug, name
+        ) VALUES (:slug, :name)
+    """)
+    @GetGeneratedKeys("id")
+    fun createProject(@BindKotlin project: Project): Int
+
+    @SqlQuery("""
+        SELECT id, slug, name FROM Projects
+    """)
+    fun projects(): List<Project>
+
+    @SqlQuery("""
+        SELECT * FROM Projects WHERE slug = :slug
+    """)
+    fun findProjectBySlug(slug: String): Project?
 }

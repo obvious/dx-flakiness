@@ -1,9 +1,6 @@
 package com.vinaysshenoy.quarantine
 
-import com.vinaysshenoy.quarantine.dao.FlakyStatus
-import com.vinaysshenoy.quarantine.dao.TestCase
-import com.vinaysshenoy.quarantine.dao.TestRun
-import com.vinaysshenoy.quarantine.dao.TestRunResult
+import com.vinaysshenoy.quarantine.dao.*
 import java.time.Instant
 
 fun testRun(
@@ -24,3 +21,9 @@ fun testRunResult(
     testCaseTestName: String = "best test of the century",
     flakyStatus: FlakyStatus = FlakyStatus.NotFlaky
 ): TestRunResult = TestRunResult(runId, caseId, testCaseClassName, testCaseTestName, flakyStatus)
+
+fun project(
+    id: Int = 1,
+    slug: String = "project",
+    name: String = "What am I doing?"
+): Project = Project(id, slug, name)
