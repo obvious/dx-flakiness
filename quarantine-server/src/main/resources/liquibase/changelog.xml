@@ -10,8 +10,4 @@
             relativeToChangelogFile="true"
             file="changesets/001.sql"/>
 
-    <include
-            relativeToChangelogFile="true"
-            file="changesets/002.sql"/>
-
 </databaseChangeLog>

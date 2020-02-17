@@ -12,23 +12,27 @@ interface QuarantineDao {
     @SqlBatch(
         """
         INSERT OR IGNORE INTO Test_Cases (
-            class, name
+            project_id, class, name
         ) VALUES (
-            :className, :testName
+            :projectId, :className, :testName
         )
         """
     )
     @Transaction
-    fun saveTestCases(@BindKotlin testCases: List<TestCase>)
+    fun saveTestCases(projectId: Int, @BindKotlin testCases: List<TestCase>)
 
     @SqlUpdate(
         """
-        INSERT INTO Test_Runs (timestamp) VALUES (:timestamp)
+        INSERT INTO Test_Runs (
+            project_id, timestamp
+        ) VALUES (
+            :projectId, :timestamp
+        )
         """
     )
     @GetGeneratedKeys("id")
     @Transaction
-    fun saveTestRun(@BindKotlin testRun: TestRun): Int
+    fun saveTestRun(projectId: Int, @BindKotlin testRun: TestRun): Int
 
     @SqlBatch(
         """
@@ -36,11 +40,18 @@ interface QuarantineDao {
                 run_id, case_id, flaky_status
             ) 
             SELECT :runId, id, :flakyStatus FROM Test_Cases
-                WHERE class = :testCaseClassName AND name = :testCaseTestName
+                WHERE 
+                    class = :testCaseClassName AND 
+                    name = :testCaseTestName AND
+                    project_id = :projectId
         """
     )
     @Transaction
-    fun saveTestRunResults(runId: Int, @BindKotlin runResults: List<TestRunResult>)
+    fun saveTestRunResults(
+        runId: Int,
+        projectId: Int,
+        @BindKotlin runResults: List<TestRunResult>
+    )
 
     @SqlQuery(
         """
@@ -57,18 +68,22 @@ interface QuarantineDao {
     fun recordTestRun(
         testRun: TestRun,
         testCases: List<TestCase>,
-        results: List<TestRunResult>
+        results: List<TestRunResult>,
+        projectSlug: String
     ) {
-        val runId = saveTestRun(testRun)
+        val project = findProjectBySlug(projectSlug)
+        requireNotNull(project) { "Could not find project with slug: '$projectSlug'" }
 
-        saveTestCases(testCases)
+        val runId = saveTestRun(project.id, testRun)
 
-        saveTestRunResults(runId, results)
+        saveTestCases(project.id, testCases)
+
+        saveTestRunResults(runId, project.id, results)
     }
 
     @SqlQuery(
         """
-            SELECT DISTINCT
+            SELECT
                 TC.class, 
                 TC.name,
                 ROUND(
@@ -81,27 +96,33 @@ interface QuarantineDao {
                     ), 
                     2
                 ) flakiness
-            FROM Test_Cases TC INNER JOIN Test_Run_Results TRR ON TRR.case_id = TC.id
-            ORDER BY class, name
+            FROM Test_Cases TC INNER JOIN Projects P ON TC.project_id = P.id AND P.slug = :projectSlug
+            ORDER BY TC.class, TC.name
         """
     )
-    fun stats(): List<TestStat>
+    fun stats(projectSlug: String): List<TestStat>
 
-    @SqlUpdate("""
+    @SqlUpdate(
+        """
         INSERT INTO Projects (
             slug, name
         ) VALUES (:slug, :name)
-    """)
+    """
+    )
     @GetGeneratedKeys("id")
     fun createProject(@BindKotlin project: Project): Int
 
-    @SqlQuery("""
+    @SqlQuery(
+        """
         SELECT id, slug, name FROM Projects
-    """)
+    """
+    )
     fun projects(): List<Project>
 
-    @SqlQuery("""
+    @SqlQuery(
+        """
         SELECT * FROM Projects WHERE slug = :slug
-    """)
+    """
+    )
     fun findProjectBySlug(slug: String): Project?
 }

@@ -7,6 +7,9 @@ data class TestRun(
     @ColumnName("id")
     val id: Int = -1,
 
+    @ColumnName("project_id")
+    val projectId: Int = -1,
+
     @ColumnName("timestamp")
     val timestamp: Instant
 )

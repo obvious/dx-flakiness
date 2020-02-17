@@ -4,6 +4,7 @@ import com.vinaysshenoy.quarantine.dao.*
 import com.vinaysshenoy.quarantine.resources.payloads.TestCasePayload
 import com.vinaysshenoy.quarantine.resources.views.ProjectsView
 import com.vinaysshenoy.quarantine.resources.views.TestStatsView
+import io.dropwizard.jersey.errors.ErrorMessage
 import org.hibernate.validator.constraints.Length
 import java.net.URI
 import java.time.Clock
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.*
 import javax.ws.rs.core.Response
+import javax.ws.rs.core.Response.Status.NOT_FOUND
 
 @Path("")
 @Produces(APPLICATION_JSON)
@@ -42,31 +44,44 @@ class QuarantineResource(
         return Response.seeOther(URI.create("")).build()
     }
 
-    @Path("quarantine")
+    @Path("/{project_slug}/reports")
     @POST
-    fun reportTestRun(@NotNull @Valid testCasePayloads: List<TestCasePayload>): Response {
-        val testRun = TestRun(timestamp = Instant.now(clock))
-        val testCases = testCasePayloads
-            .map { TestCase(className = it.testClass, testName = it.testName) }
-        val results = testCasePayloads
-            .map {
-                TestRunResult(
-                    testCaseClassName = it.testClass,
-                    testCaseTestName = it.testName,
-                    flakyStatus = it.flakyStatus
-                )
-            }
+    fun reportTestRun(
+        @NotBlank @PathParam("project_slug") projectSlug: String,
+        @NotNull @Valid testCasePayloads: List<TestCasePayload>
+    ): Response {
+        val project = quarantineDao.findProjectBySlug(projectSlug)
+        return if (project == null) {
+            Response
+                .status(NOT_FOUND)
+                .entity(ErrorMessage(NOT_FOUND.statusCode, "Could not find project with slug: $projectSlug"))
+                .build()
+        } else {
+            val testRun = TestRun(timestamp = Instant.now(clock))
+            val testCases = testCasePayloads
+                .map { TestCase(className = it.testClass, testName = it.testName) }
+            val results = testCasePayloads
+                .map {
+                    TestRunResult(
+                        testCaseClassName = it.testClass,
+                        testCaseTestName = it.testName,
+                        flakyStatus = it.flakyStatus
+                    )
+                }
 
-        quarantineDao.recordTestRun(testRun, testCases, results)
+            quarantineDao.recordTestRun(testRun, testCases, results, projectSlug)
 
-        return Response.ok("OK").build()
+            Response.ok("OK").build()
+        }
     }
 
-    @Produces(TEXT_HTML)
-    @Path("quarantine")
+    @Produces(value = [TEXT_HTML, APPLICATION_JSON])
+    @Path("/{project_slug}/reports")
     @GET
-    fun stats(): TestStatsView {
-        val stats = quarantineDao.stats().sortedByDescending { it.flakinessRate }
+    fun stats(
+        @NotBlank @PathParam("project_slug") projectSlug: String
+    ): TestStatsView {
+        val stats = quarantineDao.stats(projectSlug).sortedByDescending { it.flakinessRate }
         return TestStatsView.fromStats(stats)
     }
 }

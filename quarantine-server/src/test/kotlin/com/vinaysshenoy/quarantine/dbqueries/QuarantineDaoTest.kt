@@ -20,6 +20,9 @@ class QuarantineDaoTest {
     @Test
     fun `saving test results should work as expected`(quarantineDao: QuarantineDao) {
         // given
+        val project = project(slug = "project")
+        quarantineDao.createProject(project)
+
         val testRun = testRun(id = -1)
         val testCases = listOf(
             testCase(
@@ -61,7 +64,7 @@ class QuarantineDaoTest {
         )
 
         // when
-        quarantineDao.recordTestRun(testRun, testCases, runResults)
+        quarantineDao.recordTestRun(testRun, testCases, runResults, project.slug)
 
         // then
         expectThat(quarantineDao.testResultsForRunId(1))
@@ -90,10 +93,14 @@ class QuarantineDaoTest {
             )
     }
 
+    @Suppress("LocalVariableName")
     @Test
     fun `querying the test stats should return a list of all test cases sorted by the most flaky`(quarantineDao: QuarantineDao) {
         // given
-        val firstTestRun = Triple(
+        val firstProject = project(slug = "project_1")
+        quarantineDao.createProject(firstProject)
+
+        val firstTestRun_firstProject = Triple(
             testRun(),
             listOf(
                 testCase(className = "Class 1", testName = "test 1"),
@@ -119,7 +126,7 @@ class QuarantineDaoTest {
             )
         )
 
-        val secondTestRun = Triple(
+        val secondTestRun_firstProject = Triple(
             testRun(),
             listOf(
                 testCase(className = "Class 1", testName = "test 1"),
@@ -145,7 +152,7 @@ class QuarantineDaoTest {
             )
         )
 
-        val thirdTestRun = Triple(
+        val thirdTestRun_firstProject = Triple(
             testRun(),
             listOf(
                 testCase(className = "Class 1", testName = "test 1"),
@@ -184,16 +191,86 @@ class QuarantineDaoTest {
         )
 
         listOf(
-            firstTestRun,
-            secondTestRun,
-            thirdTestRun
-        ).forEach { (testRun, testCases, results) -> quarantineDao.recordTestRun(testRun, testCases, results) }
+            firstTestRun_firstProject,
+            secondTestRun_firstProject,
+            thirdTestRun_firstProject
+        ).forEach { (testRun, testCases, results) ->
+            quarantineDao.recordTestRun(
+                testRun,
+                testCases,
+                results,
+                firstProject.slug
+            )
+        }
+
+        val secondProject = project(slug = "project_2")
+        quarantineDao.createProject(secondProject)
+
+        val firstTestRun_secondProject = Triple(
+            testRun(),
+            listOf(
+                testCase(className = "Class 1", testName = "test 1"),
+                testCase(className = "Class 1", testName = "test 2"),
+                testCase(className = "Class 2", testName = "test 1")
+            ),
+            listOf(
+                testRunResult(
+                    testCaseClassName = "Class 1",
+                    testCaseTestName = "test 1",
+                    flakyStatus = Flaky
+                ),
+                testRunResult(
+                    testCaseClassName = "Class 1",
+                    testCaseTestName = "test 2",
+                    flakyStatus = NotFlaky
+                ),
+                testRunResult(
+                    testCaseClassName = "Class 2",
+                    testCaseTestName = "test 1",
+                    flakyStatus = Flaky
+                )
+            )
+        )
+
+        val secondTestRun_secondProject = Triple(
+            testRun(),
+            listOf(
+                testCase(className = "Class 1", testName = "test 1"),
+                testCase(className = "Class 1", testName = "test 2"),
+                testCase(className = "Class 2", testName = "test 1")
+            ),
+            listOf(
+                testRunResult(
+                    testCaseClassName = "Class 1",
+                    testCaseTestName = "test 1",
+                    flakyStatus = Flaky
+                ),
+                testRunResult(
+                    testCaseClassName = "Class 1",
+                    testCaseTestName = "test 2",
+                    flakyStatus = Flaky
+                ),
+                testRunResult(
+                    testCaseClassName = "Class 2",
+                    testCaseTestName = "test 1",
+                    flakyStatus = NotFlaky
+                )
+            )
+        )
+
+        listOf(
+            firstTestRun_secondProject,
+            secondTestRun_secondProject
+        ).forEach { (testRun, testCases, results) ->
+            quarantineDao.recordTestRun(testRun, testCases, results, secondProject.slug)
+        }
 
         // when
-        val stats = quarantineDao.stats()
+        val stats_firstProject = quarantineDao.stats(projectSlug = firstProject.slug)
+        val stats_secondProject = quarantineDao.stats(projectSlug = secondProject.slug)
 
         // then
-        expectThat(stats).containsExactly(
+        expectThat(stats_firstProject).containsExactly(
             TestStat(
                 className = "Class 1",
                 testName = "test 1",
@@ -218,6 +295,23 @@ class QuarantineDaoTest {
                 className = "Class 3",
                 testName = "test 1",
                 flakinessRate = 1F
+            )
+        )
+        expectThat(stats_secondProject).containsExactly(
+            TestStat(
+                className = "Class 1",
+                testName = "test 1",
+                flakinessRate = 1F
+            ),
+            TestStat(
+                className = "Class 1",
+                testName = "test 2",
+                flakinessRate = 0.5F
+            ),
+            TestStat(
+                className = "Class 2",
+                testName = "test 1",
+                flakinessRate = 0.5F
             )
         )
     }

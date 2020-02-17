@@ -6,6 +6,9 @@ data class TestCase(
     @ColumnName("id")
     val id: Int = -1,
 
+    @ColumnName("project_id")
+    val projectId: Int = -1,
+
     @ColumnName("class")
     val className: String,
 
