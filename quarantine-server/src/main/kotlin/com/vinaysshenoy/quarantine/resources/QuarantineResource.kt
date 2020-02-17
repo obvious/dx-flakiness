@@ -80,8 +80,19 @@ class QuarantineResource(
     @GET
     fun stats(
         @NotBlank @PathParam("project_slug") projectSlug: String
-    ): TestStatsView {
-        val stats = quarantineDao.stats(projectSlug).sortedByDescending { it.flakinessRate }
-        return TestStatsView.fromStats(stats)
+    ): Response {
+        val project = quarantineDao.findProjectBySlug(projectSlug)
+
+        return if (project == null) {
+            Response
+                .status(NOT_FOUND)
+                .entity(ErrorMessage(NOT_FOUND.statusCode, "Could not find project with slug: $projectSlug"))
+                .build()
+        } else {
+            val stats = quarantineDao.stats(projectSlug)
+            val entity = TestStatsView.fromStats(project, stats)
+
+            Response.ok(entity).build()
+        }
     }
 }

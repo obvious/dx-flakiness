@@ -42,7 +42,13 @@
     </tr>
     {{#projects}}
         <tr>
-            <td>{{slug}}</td>
+            <td>
+                <a href="{{slug}}/reports"
+                   title="View stats for {{name}}"
+                   target="_blank">
+                {{slug}}
+                </a>
+            </td>
             <td>{{name}}</td>
         </tr>
     {{/projects}}
