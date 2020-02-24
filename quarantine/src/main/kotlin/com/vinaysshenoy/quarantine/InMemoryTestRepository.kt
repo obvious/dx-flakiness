@@ -69,7 +69,7 @@ class InMemoryTestRepository(
 
     override fun pushResultsToCloud() {
         try {
-            val response = api.sendTestRun(results).execute()
+            val response = api.sendTestRun(config.slug, results).execute()
 
             if (response.isSuccessful) {
                 logger.info("Pushed test results to Quarantine successfully!")

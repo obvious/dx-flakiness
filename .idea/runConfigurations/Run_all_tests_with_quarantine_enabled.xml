@@ -3,7 +3,7 @@
     <ExternalSystemSettings>
       <option name="env">
         <map>
-          <entry key="com.vinaysshenoy.quarantine.enabled" value="true" />
+          <entry key="com.vinaysshenoy.quarantine.configFile" value="quarantine_ci.properties" />
         </map>
       </option>
       <option name="executionName" />
