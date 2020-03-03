@@ -1,0 +1,27 @@
+title = "Quarantine Demo"
+package = "quarantine-demo"
+
+[env]
+
+	[env.dev]
+	ips = ["ec2-18-230-58-83.sa-east-1.compute.amazonaws.com"]
+		[env.dev.ssh]
+		key = "ssh_keys/key-aws.pem"
+		user = "ubuntu"
+
+[provision]
+command = """
+wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
+sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
+sudo apt-get update
+sudo apt-get install --yes adoptopenjdk-13-hotspot-jre
+"""
+
+[run]
+# relative/absolute path to the local directory that contains the app to be deployed
+directory = "package"
+# command to start the app
+start = "java -jar app.jar db migrate config.yml && java -jar app.jar server config.yml"
+# (Optional) command to run after starting the app on each instance
+complete = """
+"""

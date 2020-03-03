@@ -1,10 +1,19 @@
 plugins {
-    id 'java'
+    id 'application'
     id 'org.jetbrains.kotlin.jvm'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group 'com.vinaysshenoy'
 version '0.0.1'
+mainClassName = 'com.vinaysshenoy.quarantine.AppKt'
+
+shadowJar {
+    mergeServiceFiles()
+    baseName = 'quarantine-server'
+    classifier = ''
+    archiveVersion = project.version
+}
 
 test {
     useJUnitPlatform()
@@ -44,3 +53,20 @@ compileTestKotlin {
         freeCompilerArgs = ['-Xjvm-default=enable']
     }
 }
+
+task copyPackagedJar(type: Copy) {
+    def env = rootProject.property('com.vinaysshenoy.quarantine.env')
+    def builtJar = "quarantine-server-${project.version}.jar"
+    def configFile = "config-${env}.yml"
+
+    from("build/libs",) {
+        include builtJar
+    }
+    from(projectDir.path) {
+        include configFile
+    }
+    into rootProject.file('package')
+    rename builtJar, "app.jar"
+    rename configFile, "config.yml"
+}
+shadowJar.finalizedBy copyPackagedJar
