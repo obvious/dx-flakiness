@@ -1,0 +1,62 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+publishing {
+    publications {
+        library(MavenPublication) {
+            groupId property('client.artifact.group')
+            artifactId property('client.artifact.name')
+            version property('client.artifact.version')
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = property('client.project.name')
+                description = property('client.project.description')
+                url = property('client.project.url')
+                licenses {
+                    license {
+                        name = 'All rights reserved'
+                        url = 'https://en.wikipedia.org/wiki/All_rights_reserved'
+                    }
+                }
+                developers {
+                    developer {
+                        id = property('client.project.developer.id')
+                        name = property('client.project.developer.name')
+                        email = property('client.project.developer.email')
+                    }
+                }
+                scm {
+                    url = property('client.project.url')
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = mavenReleaseUrl
+            credentials(PasswordCredentials) {
+                username = mavenRepositoryUsername
+                password = mavenRepositoryPassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.library
+}

@@ -2,9 +2,10 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm'
 }
+apply from: 'publish.gradle'
 
-group 'com.vinaysshenoy'
-version '0.0.1'
+group property('client.artifact.group')
+version property('client.artifact.version')
 
 sourceCompatibility = 1.8
 
