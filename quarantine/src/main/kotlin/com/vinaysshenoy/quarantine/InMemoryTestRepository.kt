@@ -28,8 +28,7 @@ class InMemoryTestRepository(
     companion object {
         private lateinit var INSTANCE: InMemoryTestRepository
 
-        @JvmOverloads
-        fun instance(classLoader: ClassLoader = ClassLoader.getSystemClassLoader()): TestRepository {
+        fun instance(classLoader: ClassLoader): TestRepository {
             if (::INSTANCE.isInitialized.not()) {
                 synchronized(::INSTANCE) {
                     if (::INSTANCE.isInitialized.not()) {
