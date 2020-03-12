@@ -1,4 +1,8 @@
 appName: Quarantine Server
+server:
+  applicationConnectors:
+    - type: http
+      port: 8080
 database:
   driverClass: org.sqlite.JDBC
   url: jdbc:sqlite:quarantine.db

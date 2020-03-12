@@ -4,7 +4,9 @@ package = "quarantine-demo"
 [env]
 
 	[env.dev]
-	ips = ["ec2-18-230-58-83.sa-east-1.compute.amazonaws.com"]
+	ips = ["ec2-18-231-88-81.sa-east-1.compute.amazonaws.com"]
+	domain = "quarantine.vinaysshenoy.com"
+	admin = "vinaysshenoy@gmail.com"
 		[env.dev.ssh]
 		key = "ssh_keys/key-aws.pem"
 		user = "ubuntu"
@@ -21,7 +23,10 @@ sudo apt-get install --yes adoptopenjdk-13-hotspot-jre
 # relative/absolute path to the local directory that contains the app to be deployed
 directory = "package"
 # command to start the app
-start = "java -jar app.jar db migrate config.yml && java -jar app.jar server config.yml"
+start = """
+java -jar app.jar db migrate config.yml
+java -jar app.jar server config.yml
+"""
 # (Optional) command to run after starting the app on each instance
 complete = """
 """
