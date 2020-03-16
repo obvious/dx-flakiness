@@ -11,6 +11,14 @@ package = "quarantine-demo"
 		key = "ssh_keys/key-aws.pem"
 		user = "ubuntu"
 
+	[env.prod]
+    ips = ["165.22.63.205"]
+    domain = "flakiness.dx.obvious.in"
+    admin = "vinay@obvious.in"
+        [env.prod.ssh]
+        key = "ssh_keys/key-obvious-do"
+        user = "root"
+
 [provision]
 command = """
 wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
