@@ -1,0 +1,24 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.71'
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'com.vinaysshenoy.quarantine-plugin'
+            implementationClass = 'com.vinaysshenoy.quarantine.plugin.gradle.QuarantinePlugin'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.ow2.asm:asm:8.0'
+    implementation 'org.ow2.asm:asm-util:8.0'
+    implementation 'org.ow2.asm:asm-tree:8.0'
+}

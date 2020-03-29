@@ -1,0 +1,185 @@
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validateTaskProperties UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Task :tasks
+
+------------------------------------------------------------
+Tasks runnable from root project
+------------------------------------------------------------
+
+Application tasks
+-----------------
+quarantine-server:run - Runs this project as a JVM application
+quarantine-server:runShadow - Runs this project as a JVM application using the shadow jar
+quarantine-server:startShadowScripts - Creates OS specific scripts to run the project as a JVM application using the shadow jar
+
+Build tasks
+-----------
+assemble - Assembles the outputs of this project.
+quarantine:assemble - Assembles the outputs of this project.
+quarantine-server:assemble - Assembles the outputs of this project.
+build - Assembles and tests this project.
+quarantine:build - Assembles and tests this project.
+quarantine-server:build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+quarantine:buildDependents - Assembles and tests this project and all projects that depend on it.
+quarantine-server:buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+quarantine:buildNeeded - Assembles and tests this project and all projects it depends on.
+quarantine-server:buildNeeded - Assembles and tests this project and all projects it depends on.
+classes - Assembles main classes.
+quarantine:classes - Assembles main classes.
+quarantine-server:classes - Assembles main classes.
+clean - Deletes the build directory.
+quarantine:clean - Deletes the build directory.
+quarantine-server:clean - Deletes the build directory.
+jar - Assembles a jar archive containing the main classes.
+quarantine:jar - Assembles a jar archive containing the main classes.
+quarantine-server:jar - Assembles a jar archive containing the main classes.
+testClasses - Assembles test classes.
+quarantine:testClasses - Assembles test classes.
+quarantine-server:testClasses - Assembles test classes.
+
+Build Setup tasks
+-----------------
+init - Initializes a new Gradle build.
+wrapper - Generates Gradle wrapper files.
+
+Distribution tasks
+------------------
+quarantine-server:assembleDist - Assembles the main distributions
+quarantine-server:assembleShadowDist - Assembles the shadow distributions
+quarantine-server:distTar - Bundles the project as a distribution.
+quarantine-server:distZip - Bundles the project as a distribution.
+quarantine-server:installDist - Installs the project as a distribution as-is.
+quarantine-server:installShadowDist - Installs the project as a distribution as-is.
+quarantine-server:shadowDistTar - Bundles the project as a distribution.
+quarantine-server:shadowDistZip - Bundles the project as a distribution.
+
+Documentation tasks
+-------------------
+javadoc - Generates Javadoc API documentation for the main source code.
+quarantine:javadoc - Generates Javadoc API documentation for the main source code.
+quarantine-server:javadoc - Generates Javadoc API documentation for the main source code.
+
+Help tasks
+----------
+buildEnvironment - Displays all buildscript dependencies declared in root project 'quarantine-tests'.
+quarantine:buildEnvironment - Displays all buildscript dependencies declared in project ':quarantine'.
+quarantine-server:buildEnvironment - Displays all buildscript dependencies declared in project ':quarantine-server'.
+components - Displays the components produced by root project 'quarantine-tests'. [incubating]
+quarantine:components - Displays the components produced by project ':quarantine'. [incubating]
+quarantine-server:components - Displays the components produced by project ':quarantine-server'. [incubating]
+dependencies - Displays all dependencies declared in root project 'quarantine-tests'.
+quarantine:dependencies - Displays all dependencies declared in project ':quarantine'.
+quarantine-server:dependencies - Displays all dependencies declared in project ':quarantine-server'.
+dependencyInsight - Displays the insight into a specific dependency in root project 'quarantine-tests'.
+quarantine:dependencyInsight - Displays the insight into a specific dependency in project ':quarantine'.
+quarantine-server:dependencyInsight - Displays the insight into a specific dependency in project ':quarantine-server'.
+dependentComponents - Displays the dependent components of components in root project 'quarantine-tests'. [incubating]
+quarantine:dependentComponents - Displays the dependent components of components in project ':quarantine'. [incubating]
+quarantine-server:dependentComponents - Displays the dependent components of components in project ':quarantine-server'. [incubating]
+help - Displays a help message.
+quarantine:help - Displays a help message.
+quarantine-server:help - Displays a help message.
+model - Displays the configuration model of root project 'quarantine-tests'. [incubating]
+quarantine:model - Displays the configuration model of project ':quarantine'. [incubating]
+quarantine-server:model - Displays the configuration model of project ':quarantine-server'. [incubating]
+projects - Displays the sub-projects of root project 'quarantine-tests'.
+quarantine:projects - Displays the sub-projects of project ':quarantine'.
+quarantine-server:projects - Displays the sub-projects of project ':quarantine-server'.
+properties - Displays the properties of root project 'quarantine-tests'.
+quarantine:properties - Displays the properties of project ':quarantine'.
+quarantine-server:properties - Displays the properties of project ':quarantine-server'.
+tasks - Displays the tasks runnable from root project 'quarantine-tests' (some of the displayed tasks may belong to subprojects).
+quarantine:tasks - Displays the tasks runnable from project ':quarantine'.
+quarantine-server:tasks - Displays the tasks runnable from project ':quarantine-server'.
+
+Publishing tasks
+----------------
+quarantine:generateMetadataFileForLibraryPublication - Generates the Gradle metadata file for publication 'library'.
+quarantine:generatePomFileForLibraryPublication - Generates the Maven POM file for publication 'library'.
+quarantine:publish - Publishes all publications produced by this project.
+quarantine:publishAllPublicationsToMavenRepository - Publishes all Maven publications produced by this project to the maven repository.
+quarantine:publishLibraryPublicationToMavenLocal - Publishes Maven publication 'library' to the local Maven repository.
+quarantine:publishLibraryPublicationToMavenRepository - Publishes Maven publication 'library' to Maven repository 'maven'.
+quarantine:publishToMavenLocal - Publishes all Maven publications produced by this project to the local Maven cache.
+
+Shadow tasks
+------------
+quarantine-server:knows - Do you know who knows?
+quarantine-server:shadowJar - Create a combined JAR of project and runtime dependencies
+
+Verification tasks
+------------------
+check - Runs all checks.
+quarantine:check - Runs all checks.
+quarantine-server:check - Runs all checks.
+test - Runs the unit tests.
+quarantine:test - Runs the unit tests.
+quarantine-server:test - Runs the unit tests.
+
+Other tasks
+-----------
+compileJava - Compiles main Java source.
+quarantine:compileJava - Compiles main Java source.
+quarantine-server:compileJava - Compiles main Java source.
+compileKotlin - Compiles the compilation 'main' (target  (jvm)).
+quarantine:compileKotlin - Compiles the compilation 'main' (target  (jvm)).
+quarantine-server:compileKotlin - Compiles the compilation 'main' (target  (jvm)).
+compileTestJava - Compiles test Java source.
+quarantine:compileTestJava - Compiles test Java source.
+quarantine-server:compileTestJava - Compiles test Java source.
+compileTestKotlin - Compiles the compilation 'test' (target  (jvm)).
+quarantine:compileTestKotlin - Compiles the compilation 'test' (target  (jvm)).
+quarantine-server:compileTestKotlin - Compiles the compilation 'test' (target  (jvm)).
+quarantine-server:copyPackagedJar
+hello
+inspectClassesForKotlinIC
+quarantine:inspectClassesForKotlinIC
+quarantine-server:inspectClassesForKotlinIC
+quarantine:javadocJar
+kotlinSourcesJar
+quarantine:kotlinSourcesJar
+quarantine-server:kotlinSourcesJar
+mainClasses
+quarantine:mainClasses
+quarantine-server:mainClasses
+prepareKotlinBuildScriptModel
+quarantine:prepareKotlinBuildScriptModel
+quarantine-server:prepareKotlinBuildScriptModel
+processResources - Processes main resources.
+quarantine:processResources - Processes main resources.
+quarantine-server:processResources - Processes main resources.
+processTestResources - Processes test resources.
+quarantine:processTestResources - Processes test resources.
+quarantine-server:processTestResources - Processes test resources.
+quarantine:signLibraryPublication - Signs all artifacts in the 'library' publication.
+quarantine:sourcesJar
+quarantine-server:startScripts - Creates OS specific scripts to run the project as a JVM application.
+
+Rules
+-----
+Pattern: clean<TaskName>: Cleans the output files of a task.
+Pattern: build<ConfigurationName>: Assembles the artifacts of a configuration.
+Pattern: upload<ConfigurationName>: Assembles and uploads the artifacts belonging to a configuration.
+
+BUILD SUCCESSFUL in 726ms
+1 actionable task: 1 executed
