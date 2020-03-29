@@ -42,7 +42,7 @@ class QuarantinedStatement(
                     }
                 }.last()
 
-                if (testRunCount == flakyTestRetryCount) {
+                if (testRunCount > flakyTestRetryCount) {
                     // We have tested it for all retry counts and it has failed each time, so it is not a flaky test
                     repository.record(testClazzName, testMethodName, false)
 
