@@ -1,16 +1,14 @@
 package com.vinaysshenoy.testrunnermvp
 
-import com.vinaysshenoy.quarantine.QuarantineTestRule
-import org.junit.Rule
+import com.vinaysshenoy.quarantine.QuarantineTestRunner
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
+@RunWith(QuarantineTestRunner::class)
 class CanaryTest {
-
-    @get:Rule
-    val rule = QuarantineTestRule()
 
     @Test
     fun `test framework must work as expected`() {

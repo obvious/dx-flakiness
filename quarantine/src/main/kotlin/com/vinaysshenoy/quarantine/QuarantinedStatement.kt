@@ -1,5 +1,6 @@
 package com.vinaysshenoy.quarantine
 
+import org.junit.internal.AssumptionViolatedException
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
@@ -8,7 +9,7 @@ class QuarantinedStatement(
     private val flakyTestRetryCount: Int,
     private val base: Statement,
     private val description: Description
-): Statement() {
+) : Statement() {
 
     override fun evaluate() {
         val descriptors =
@@ -24,6 +25,10 @@ class QuarantinedStatement(
                 // If it passes, mark it as not-flaky
                 repository.record(testClazzName, testMethodName, false)
             } catch (e: Throwable) {
+                if (e is AssumptionViolatedException) {
+                    throw e
+                }
+
                 // This test having failed once need not mean that is flaky. We will try running the test some more times
                 // and see if they pass in any of those. In which case, we will mark them as flaky.
                 val testRunCount = generateSequence(1) { testRetryNumber ->
