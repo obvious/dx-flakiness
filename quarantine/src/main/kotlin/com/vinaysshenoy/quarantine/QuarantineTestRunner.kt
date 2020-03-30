@@ -9,7 +9,7 @@ import org.junit.runners.model.FrameworkMethod
 
 class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
 
-    private val repository: TestRepository by lazy { InMemoryTestRepository.instance(ClassLoader.getSystemClassLoader()) }
+    private val repository: TestRepository by lazy { Quarantine.repository }
 
     init {
         ReportFlakyTestsOnComplete.setup(repository)

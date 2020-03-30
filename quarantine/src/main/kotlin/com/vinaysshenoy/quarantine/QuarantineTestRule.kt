@@ -4,11 +4,9 @@ import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
-class QuarantineTestRule @JvmOverloads constructor(
-    private val classLoader: ClassLoader = ClassLoader.getSystemClassLoader()
-) : TestRule {
+class QuarantineTestRule : TestRule {
 
-    private val repository: TestRepository by lazy { InMemoryTestRepository.instance(classLoader) }
+    private val repository: TestRepository by lazy { Quarantine.repository }
 
     init {
         ReportFlakyTestsOnComplete.setup(repository)
