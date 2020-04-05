@@ -10,7 +10,11 @@ class ReportFlakyTestsOnComplete(
         private val hasBeenSetup = AtomicBoolean(false)
 
         fun setup(repository: TestRepository) {
-            if (!hasBeenSetup.get() && repository.config().enabled) {
+            val isRunningOnJvm = !Quarantine.isOnAndroid
+            val hasNotAlreadyBeenSetup = !hasBeenSetup.get()
+            val isFlakyTestDetectionEnabled = Quarantine.isEnabled
+
+            if (isRunningOnJvm && hasNotAlreadyBeenSetup && isFlakyTestDetectionEnabled) {
                 val reportFlakyTests = ReportFlakyTestsOnComplete(repository)
                 Runtime.getRuntime().addShutdownHook(reportFlakyTests)
 
