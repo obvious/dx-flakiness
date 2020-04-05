@@ -2,4 +2,5 @@ rootProject.name = 'quarantine-tests'
 include 'quarantine'
 include 'quarantine-server'
 include 'sample-jvm'
+include 'sample-android'
 

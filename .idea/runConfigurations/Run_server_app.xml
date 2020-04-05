@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run server app" type="JetRunConfigurationType" factoryName="Kotlin">
-    <module name="quarantine-tests.quarantine-server.main" />
+  <configuration default="false" name="Run server app" type="JetRunConfigurationType">
+    <module name="quarantine-tests.quarantine-server" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="server quarantine-server/config.yml" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />

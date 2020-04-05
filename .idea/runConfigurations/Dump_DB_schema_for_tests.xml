@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Dump DB schema for tests" type="JetRunConfigurationType" factoryName="Kotlin">
-    <module name="quarantine-tests.quarantine-server.main" />
+  <configuration default="false" name="Dump DB schema for tests" type="JetRunConfigurationType">
+    <module name="quarantine-tests.quarantine-server" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="db dump -o quarantine-server/src/test/resources/db-schema.xml --ignore-data quarantine-server/config.yml" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
