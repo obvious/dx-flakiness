@@ -12,7 +12,7 @@ class QuarantineTestRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
     private val repository: TestRepository by lazy { Quarantine.repository }
 
     init {
-        ReportFlakyTestsOnComplete.setup(repository)
+        ReportFlakyTestsOnComplete.setup()
     }
 
     private val flakyTestRetryCount = 10

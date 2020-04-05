@@ -9,7 +9,7 @@ class QuarantineTestRule : TestRule {
     private val repository: TestRepository by lazy { Quarantine.repository }
 
     init {
-        ReportFlakyTestsOnComplete.setup(repository)
+        ReportFlakyTestsOnComplete.setup()
     }
 
     override fun apply(statement: Statement, description: Description): Statement {

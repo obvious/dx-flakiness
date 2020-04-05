@@ -28,4 +28,8 @@ object Quarantine {
             null
         }
     }
+
+    fun pushResults() {
+        repository.pushResultsToCloud()
+    }
 }
