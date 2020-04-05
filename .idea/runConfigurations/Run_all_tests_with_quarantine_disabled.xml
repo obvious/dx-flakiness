@@ -10,8 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":cleanTest" />
-          <option value=":test" />
+          <option value=":sample-jvm:cleanTest" />
+          <option value=":sample-jvm:test" />
         </list>
       </option>
       <option name="vmOptions" value="" />
