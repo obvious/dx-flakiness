@@ -7,7 +7,7 @@
         </map>
       </option>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/sample-jvm" />
       <option name="externalSystemIdString" value="GRADLE" />
       <option name="scriptParameters" value="--no-build-cache --tests *" />
       <option name="taskDescriptions">
@@ -15,8 +15,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":cleanTest" />
-          <option value=":test" />
+          <option value=":sample-jvm:cleanTest" />
+          <option value=":sample-jvm:test" />
         </list>
       </option>
       <option name="vmOptions" value="" />

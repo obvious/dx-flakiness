@@ -119,3 +119,52 @@ We use [dPlauy](https://github.com/vinaysshenoy/dPlauy) to automatically deploy 
 cd ../path/to/dPlauy/project
 python3 deploy.py ../path/to/quarantine-tests env=<env>
 ```
+
+## JVM integration
+
+### Installation
+
+Add the dependency:
+
+```
+implementation 'com.vinaysshenoy:quarantine-junit4:{version}'
+```
+
+### Integration
+Integrating the tool into a JVM project requires two things:
+
+#### Configuration file
+Create a file `quarantine.properties` and place it inside `src/test/resources`.
+
+```properties
+enabled=true
+serviceEndpoint=http://localhost:8080
+slug=quarantine-test
+```
+
+Following is a list of available properties and their usage: 
+
+| Property          | Required | Default value         | Description                                                                                           |
+|-------------------|----------|-----------------------|-------------------------------------------------------------------------------------------------------|
+| `enabled`         | No       | `false`               | `true` to enable flaky test detection, `false` to not.                                                |
+| `serviceEndpoint` | No       | `http://localhost:80` | Where the flakiness detection server is hosted.                                                       |
+| `slug`            | Yes      | N/A                   | The slug of the test suite on the server. Can be selected when adding a new test suite on the server. |
+
+#### Test rule
+
+Add the `QuarantineTestRule` as a [`JUnit4` test rule](https://github.com/junit-team/junit4/wiki/Rules) to test classes.
+
+```kotlin
+@get:Rule
+val rule = QuarantineTestRule()
+```
+
+From now on, running the test suites should automatically start capturing flaky tests if the `enabled` property has been set.
+
+### CI integration
+You might want to leave the tool disabled for local development and only turn in on in CI builds. To achieve this, the tool lets you supply a different config file via an environment variable.
+
+- Set `enabled` to `false` in the default `quarantine.properties` file.
+- Create a copy of the file called `quarantine_ci.properties` and place it alongside the existing file. Set `enabled` to `true` in this file.
+- When running tests on CI, set the `com.vinaysshenoy.quarantine.configFile` environment variable to `quarantine_ci.properties`. 
+
