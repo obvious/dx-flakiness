@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.vinaysshenoy.quarantine.sample.android.test">
+
+    <instrumentation
+            android:name="androidx.test.runner.AndroidJUnitRunner"
+            android:targetPackage="com.vinaysshenoy.quarantine.sample.android">
+
+        <meta-data
+                android:name="listener"
+                android:value="com.vinaysshenoy.quarantine.QuarantineRunListener"/>
+
+    </instrumentation>
+</manifest>

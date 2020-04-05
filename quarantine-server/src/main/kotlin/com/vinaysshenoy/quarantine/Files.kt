@@ -1,7 +1,7 @@
 package com.vinaysshenoy.quarantine
 
-import java.nio.file.Path
+import java.nio.file.Paths
 
 fun path(first: String, vararg parts: String): String {
-    return Path.of(first, *parts).toString()
+    return Paths.get(first, *parts).toString()
 }

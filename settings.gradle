@@ -3,5 +3,4 @@ include 'quarantine'
 include 'quarantine-server'
 include 'sample-jvm'
 include 'sample-android'
-include ':quarantine-android'
-
+include 'quarantine-android'
