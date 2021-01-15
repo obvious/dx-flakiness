@@ -11,22 +11,25 @@ Currently, only supports the following platforms:
 
 ## Pre-requisites
 
-The application currently requires JDK 13 to build. If you already have JDK 13 installed, skip this step.
+The application currently requires JDK 11 or higher to build. If you already have an appropriate JDK installed, skip this step.
 
 **Check if the right JDK is already available**
 
 Run the command `java -version`. If you have the right version of the JDK installed, you should see something like:
 ```sh
-openjdk version "13.0.2" 2020-01-14
-OpenJDK Runtime Environment AdoptOpenJDK (build 13.0.2+8)
-OpenJDK 64-Bit Server VM AdoptOpenJDK (build 13.0.2+8, mixed mode, sharing)
+openjdk version "11.0.8" 2020-07-14
+OpenJDK Runtime Environment AdoptOpenJDK (build 11.0.8+10)
+Eclipse OpenJ9 VM AdoptOpenJDK (build openj9-0.21.0, JRE 11 Linux amd64-64-Bit Compressed References 20200715_697 (JIT enabled, AOT enabled)
+OpenJ9   - 34cf4c075
+OMR      - 113e54219
+JCL      - 95bb504fbb based on jdk-11.0.8+10)
 ```
 
 If this command has an error, or shows a different version, you can follow the instructions below to install the JDK.
 
 **Install the JDK**
 
-We recommend using [jEnv](https://www.jenv.be/) to manage your JDK installations. Here are instructions to setup a working JDK 1.8 installation (macOS only):
+We recommend using [jEnv](https://www.jenv.be/) to manage your JDK installations. Here are instructions to setup a working JDK installation (macOS only):
 
 1. Setup up [Homebrew](https://brew.sh/).
 
@@ -49,14 +52,19 @@ brew cask install adoptopenjdk8
 
 5. Add the installed JDK to `jEnv`
 ```sh
-jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
 ```
 
 6. Run the command `jenv versions`. You should see something like:
 ```sh
   system
-* 13.0
-  openjdk64-13.0.1
+* 11 (set by /home/vinaysshenoy/Dev/Obvious/dx-flakiness/.java-version)
+  11.0
+  11.0.8
+  1.8
+  1.8.0.265
+  ibm64-11.0.8
+  ibm64-1.8.0.265
 ```
 
 ## How to build
